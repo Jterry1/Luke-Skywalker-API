@@ -1,15 +1,8 @@
-import { Router, navigate } from '@reach/router';
-import React, {useState, useEffect} from 'react';
-import './App.css';
-import People from './components/People';
-import Planet from './components/Planets';
-import axios from 'axios';
+import React, { useState, navigate } from 'react';
 
-
-function App() {
+const Wrapper = (props) => {
     const [category, setCategory] = useState('');
     const [id, setId] = useState('');
-    const [state, setState] = useState({});
 
     const onChangeHandler = e => {
         if (e.target.name === 'category') (
@@ -21,15 +14,7 @@ function App() {
     }
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        useEffect(() => {
-            axios.get(`https://swapi.co/api/people`)
-                .then(response => {
-                    setState(response.data)
-                    navigate(`/${category}/${id}`)
-                }).catch(err => {
-                    console.log(err);
-                });
-        }, []);
+        navigate(`/${category}/${id}`);
     }
     return (
         <div>
@@ -42,13 +27,10 @@ function App() {
                 <input type='text' value={id} name='id' onChange={(e) => onChangeHandler(e)} />
                 <input type="submit" value="Submit" />
             </form>
-            <Router>
-                <People path='/people/:id' info={state} />
-                <Planet path='people/:id' info={state} />
-            </Router>
         </div>
     )
+
 }
 
 
-export default App;
+export default Wrapper;
